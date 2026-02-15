@@ -15,15 +15,13 @@ st.set_page_config(
 st.title("📊 Dashboard Analisis Data Kuesioner")
 
 # ===============================
-# UPLOAD FILE
+# LOAD DATA LANGSUNG (TANPA UPLOAD)
 # ===============================
-uploaded_file = st.file_uploader("Upload file Excel kuesioner", type=["xlsx"])
-
-if uploaded_file is None:
-    st.info("Silakan upload file Excel terlebih dahulu.")
+try:
+    df = pd.read_excel("data_kuesioner.xlsx")
+except:
+    st.error("File data_kuesioner.xlsx tidak ditemukan di folder project.")
     st.stop()
-
-df = pd.read_excel(uploaded_file)
 
 question_cols = [col for col in df.columns if col.startswith("Q")]
 
@@ -80,7 +78,6 @@ st.divider()
 # VISUALISASI
 # ===============================
 
-# ---- BAR CHART
 if chart_type == "Bar":
     st.subheader("📊 Rata-rata Skor per Pertanyaan")
 
@@ -100,7 +97,6 @@ if chart_type == "Bar":
     st.plotly_chart(fig, use_container_width=True)
 
 
-# ---- PIE CHART
 elif chart_type == "Pie":
     st.subheader("🥧 Distribusi Jawaban")
 
@@ -117,7 +113,6 @@ elif chart_type == "Pie":
     st.plotly_chart(fig, use_container_width=True)
 
 
-# ---- LINE CHART
 elif chart_type == "Line":
     st.subheader("📈 Tren Rata-rata Skor")
 
@@ -137,7 +132,6 @@ elif chart_type == "Line":
     st.plotly_chart(fig, use_container_width=True)
 
 
-# ---- RADAR CHART
 elif chart_type == "Radar":
     st.subheader("🛡️ Radar Chart")
 
